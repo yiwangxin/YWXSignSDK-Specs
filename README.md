@@ -7,7 +7,7 @@ source 'https://cdn.cocoapods.org/'
 platform :ios, '15.0'
 
 target 'YourApp' do
-  pod 'BjcaSignSDK', '4.1.2-alpha.9'
+  pod 'BjcaSignSDK', '4.1.3-alpha.13'
 end
 ```
 
