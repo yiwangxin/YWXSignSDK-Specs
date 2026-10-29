@@ -1,0 +1,27 @@
+Pod::Spec.new do |s|
+  s.name = 'YWXSignSDK'
+  s.version = '4.1.3-alpha.20'
+  s.summary = '医网信当前维护线 iOS 签名 SDK 预发布'
+  s.homepage = 'https://doc.51trust.com'
+  s.author = { '51Trust' => 'szyx@bjca.org.cn' }
+  s.platform = :ios, '15.0'
+  s.source = { http: 'https://nexus-inner.51trust.com/repository/sdk-cdn/ywxnow/ios/4.1.3-alpha.20/YWXSignSDK-4.1.3-alpha.20.zip', sha256: '2d992f87aa8cf15d3275c1caf59597e6aa32bbd5c33c9f20e0f33d752c142d6e' }
+  s.license = { type: 'MIT' }
+  s.vendored_frameworks = 'Core/YWXSignSDK.xcframework', 'Support/Required/YWXSignFoundation.xcframework'
+  s.resources = 'Core/YWXSignSDK.bundle'
+  s.preserve_paths = 'Core/Vendor/**'
+  s.frameworks = 'Foundation', 'Security', 'UIKit', 'CoreTelephony', 'AVFoundation', 'LocalAuthentication', 'CoreBluetooth', 'Photos', 'SystemConfiguration'
+  s.libraries = 'c++', 'z', 'resolv'
+  # SDK及上海CA依赖仅支持arm64真机。
+  # Development Pod的宿主目标没有PODS_TARGET_SRCROOT；在spec作用域解析本地源根。
+  vendor_root = '${PODS_ROOT}/YWXSignSDK'
+  s.swift_version = '5.0'
+  s.user_target_xcconfig = {
+    'LIBRARY_SEARCH_PATHS' => '$(inherited) $(TOOLCHAIN_DIR)/usr/lib/swift/$(PLATFORM_NAME)',
+    'ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES' => 'YES',
+    'OTHER_LDFLAGS' => '$(inherited) -ObjC',
+    'OTHER_LDFLAGS[sdk=iphoneos*]' => '$(inherited) -framework UniTrust -framework ShecaSecKitService -framework CAFeatureKit -lscsk',
+    'FRAMEWORK_SEARCH_PATHS[sdk=iphoneos*]' => "$(inherited) \"#{vendor_root}/Core/Vendor/UniTrust-6.2.2\" \"#{vendor_root}/Core/Vendor/UniTrust-6.2.2/SSKS\" \"#{vendor_root}/Core/Vendor/UniTrust-6.2.2/BASE\"",
+    'LIBRARY_SEARCH_PATHS[sdk=iphoneos*]' => "$(inherited) \"#{vendor_root}/Core/Vendor/UniTrust-6.2.2/SSKS/libscsk\""
+  }
+end
